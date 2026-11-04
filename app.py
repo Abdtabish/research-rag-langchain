@@ -1,34 +1,22 @@
 
 import gradio as gr
-
 from document_manager import add_pdf_to_knowledge_base
 from rag import rag_chain
-
-
-# --------------------------------------------------
-# 1. Chat Function
-# --------------------------------------------------
-
-
 import time
-
 from rag import retriever, prompt, llm, format_docs
 from langchain_core.output_parsers import StrOutputParser
 
 
 def chat_with_rag(message, history):
 
-    # 1. Measure retrieval time
     start = time.perf_counter()
 
     documents = retriever.invoke(message)
 
     retrieval_time = time.perf_counter() - start
 
-    # 2. Prepare context
     context = format_docs(documents)
 
-    # 3. Measure LLM generation time
     start = time.perf_counter()
 
     answer = (
@@ -40,7 +28,6 @@ def chat_with_rag(message, history):
 
     llm_time = time.perf_counter() - start
 
-    # 4. Display sources
     sources = []
 
     for doc in documents:
@@ -62,7 +49,6 @@ def chat_with_rag(message, history):
         final_response += "\n\n**Sources:**\n"
         final_response += "\n".join(sources)
 
-    # 5. Print performance information
     print("\n------ PERFORMANCE REPORT ------")
     print(f"Retrieval time: {retrieval_time:.2f} seconds")
     print(f"LLM generation time: {llm_time:.2f} seconds")
@@ -72,21 +58,12 @@ def chat_with_rag(message, history):
     return final_response
 
 
-
-# --------------------------------------------------
-# 2. PDF Upload Function
-# --------------------------------------------------
-
 def upload_and_process_pdf(pdf_file):
 
     result = add_pdf_to_knowledge_base(pdf_file)
 
     return result
 
-
-# --------------------------------------------------
-# 3. Gradio Application
-# --------------------------------------------------
 
 with gr.Blocks() as app:
 
@@ -124,10 +101,5 @@ with gr.Blocks() as app:
             inputs=pdf_upload,
             outputs=upload_status
         )
-
-
-# --------------------------------------------------
-# 4. Launch Application
-# --------------------------------------------------
 
 app.launch()
