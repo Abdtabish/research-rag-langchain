@@ -61,16 +61,12 @@ def run_evaluation():
         print(f"TEST CASE {index}")
         print("=" * 60)
 
-        # Run the existing RAG pipeline
         response = rag_chain.invoke(question)
 
-        # Extract generated answer
         generated_answer = response["answer"]
 
-        # Extract retrieved documents
         documents = response["documents"]
 
-        # Collect source information
         sources = []
 
         for doc in documents:
@@ -78,7 +74,6 @@ def run_evaluation():
             filename = doc.metadata.get("source", "Unknown")
             page = doc.metadata.get("page", "Unknown")
 
-            # PyPDFLoader uses zero-based page numbering
             if isinstance(page, int):
                 page = page + 1
 
@@ -87,7 +82,6 @@ def run_evaluation():
             if source not in sources:
                 sources.append(source)
 
-        # Store evaluation results
         results.append({
             "Question": question,
             "Expected Answer": expected_answer,
@@ -95,7 +89,6 @@ def run_evaluation():
             "Retrieved Sources": "; ".join(sources)
         })
 
-        # Display results
         print("\nQuestion:")
         print(question)
 
@@ -109,7 +102,6 @@ def run_evaluation():
         for source in sources:
             print(source)
 
-    # Save evaluation results to CSV
     with open(
         "evaluation_results.csv",
         "w",
