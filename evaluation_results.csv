@@ -1,0 +1,21 @@
+Question,Expected Answer,Generated Answer,Retrieved Sources
+What is the Transformer architecture?,"The Transformer is an architecture based entirely on attention mechanisms, dispensing with recurrence and convolutions.","The Transformer is a sequence‑to‑sequence architecture that relies entirely on self‑attention mechanisms instead of recurrence. Its overall design consists of two main stacks:
+
+* **Encoder stack** – a stack of \(N = 6\) identical layers. Each layer contains:
+  1. A multi‑head self‑attention sub‑layer.
+  2. A position‑wise fully‑connected feed‑forward sub‑layer.
+
+  Both sub‑layers use residual connections followed by layer normalization, and all sub‑layers (as well as the embedding layers) output vectors of dimension \(d_{\text{model}} = 512\).
+
+* **Decoder stack** – a mirrored stack of \(N = 6\) identical layers, each with:
+  1. A masked multi‑head self‑attention sub‑layer (to preserve autoregressive property).
+  2. A multi‑head attention sub‑layer that attends to the encoder’s output.
+  3. A position‑wise fully‑connected feed‑forward sub‑layer.
+
+  Like the encoder, each decoder sub‑layer also employs residual connections and layer normalization.
+
+The architecture enables parallel computation across all positions, allowing efficient training (e.g., achieving state‑of‑the‑art translation quality after only twelve hours on eight P100 GPUs).",data\pdfs\attention_is_all_you_need.pdf | Page 3; data\pdfs\lora.pdf | Page 8; data\pdfs\attention_is_all_you_need.pdf | Page 2
+How many encoder and decoder layers are used?,The Transformer uses six encoder layers and six decoder layers.,The Transformer uses **6 encoder layers** and **6 decoder layers**.,data\pdfs\attention_is_all_you_need.pdf | Page 3; data\pdfs\attention_is_all_you_need.pdf | Page 6
+What is the dimensionality of the model?,The base Transformer model uses a model dimension of 512.,I don't know based on the provided documents.,data\pdfs\Deep-Learning-with-PyTorch.pdf | Page 152; data\pdfs\Deep-Learning-with-PyTorch.pdf | Page 181; data\pdfs\lora.pdf | Page 12
+How many attention heads are used?,The base Transformer model uses eight attention heads.,8 attention heads are used.,data\pdfs\attention_is_all_you_need.pdf | Page 5; data\pdfs\attention_is_all_you_need.pdf | Page 4
+What is positional encoding?,Positional encoding provides information about the positions of tokens in a sequence.,"Positional encoding is a technique used in transformer models to inject information about the order or position of tokens in a sequence. Since transformer blocks themselves have no inherent notion of token order, positional encodings are added to the input embeddings so that the model can distinguish between tokens based on their relative or absolute positions. In the context provided, sinusoidal positional encodings are used, defined by sine and cosine functions of varying frequencies, which allow the model to learn relative positions and potentially extrapolate to longer sequences.",data\pdfs\attention_is_all_you_need.pdf | Page 6; data\pdfs\gpt.pdf | Page 7
