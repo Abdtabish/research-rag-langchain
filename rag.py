@@ -15,10 +15,6 @@ from langchain_core.runnables import (
 )
 
 
-# --------------------------------------------------
-# 1. Load environment variables
-# --------------------------------------------------
-
 load_dotenv()
 
 GROQ_API_KEY = os.getenv("GROQ_API_KEY")
@@ -29,10 +25,6 @@ if not GROQ_API_KEY:
         "Please configure your API key."
     )
 
-
-# --------------------------------------------------
-# 2. Initialize embedding model
-# --------------------------------------------------
 
 try:
 
@@ -47,11 +39,6 @@ except Exception as e:
     raise RuntimeError(
         f"Failed to load embedding model: {e}"
     ) from e
-
-
-# --------------------------------------------------
-# 3. Load FAISS vector database
-# --------------------------------------------------
 
 try:
 
@@ -74,19 +61,9 @@ except Exception as e:
         f"Failed to load FAISS database: {e}"
     ) from e
 
-
-# --------------------------------------------------
-# 4. Create retriever
-# --------------------------------------------------
-
 retriever = vector_store.as_retriever(
     search_kwargs={"k": 3}
 )
-
-
-# --------------------------------------------------
-# 5. Initialize Groq LLM
-# --------------------------------------------------
 
 try:
 
@@ -105,10 +82,6 @@ except Exception as e:
         f"Failed to initialize Groq LLM: {e}"
     ) from e
 
-
-# --------------------------------------------------
-# 6. Create prompt template
-# --------------------------------------------------
 
 prompt = ChatPromptTemplate.from_template(
     """
@@ -132,21 +105,11 @@ prompt = ChatPromptTemplate.from_template(
     """
 )
 
-
-# --------------------------------------------------
-# 7. Format retrieved documents
-# --------------------------------------------------
-
 def format_docs(documents):
 
     return "\n\n".join(
         doc.page_content for doc in documents
     )
-
-
-# --------------------------------------------------
-# 8. Retrieve documents
-# --------------------------------------------------
 
 def retrieve_documents(question):
 
@@ -181,10 +144,6 @@ def retrieve_documents(question):
         ) from e
 
 
-# --------------------------------------------------
-# 9. Generate answer
-# --------------------------------------------------
-
 def generate_answer(inputs):
 
     try:
@@ -209,11 +168,6 @@ def generate_answer(inputs):
         raise RuntimeError(
             f"Answer generation failed: {e}"
         ) from e
-
-
-# --------------------------------------------------
-# 10. Build RAG chain
-# --------------------------------------------------
 
 rag_chain = (
 
